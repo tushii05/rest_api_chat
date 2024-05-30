@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const socket = io();
+
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+
+      socket.on('message', (data) => {
+        const messages = document.getElementById('messages');
+        const messageElement = document.createElement('li');
+        messageElement.textContent = `${data.user}: ${data.msg}`;
+        messages.appendChild(messageElement);
+      });
+
+      function createRoom() {
+        const roomName = document.getElementById('roomName').value;
+        socket.emit('createRoom', roomName); 
+    }
+
+      function joinRoom() {
+        const roomName = document.getElementById('roomName').value;
+        socket.emit('joinRoom', roomName);
+      }
+
+      function leaveRoom() {
+        const roomName = document.getElementById('roomName').value;
+        socket.emit('leaveRoom', roomName);
+      }
+
+      function sendMessage() {
+        const roomName = document.getElementById('roomName').value;
+        const message = document.getElementById('message').value;
+        socket.emit('message', { roomName: roomName, msg: message });
+        document.getElementById('message').value = '';
+      }
+    });
+  </script> -->
+
+  <script>
+    const socket = io();
+
+    function createRoom() {
+      console.log("object");
+      const roomName = document.getElementById('roomName').value;
+      socket.emit('createRoom', roomName);
+    }
+
+    function joinRoom() {
+      const roomName = document.getElementById('roomName').value;
+      socket.emit('joinRoom', roomName);
+    }
+
+    function leaveRoom() {
+      const roomName = document.getElementById('roomName').value;
+      socket.emit('leaveRoom', roomName);
+    }
+
+    function sendMessage() {
+      const roomName = document.getElementById('roomName').value;
+      const message = document.getElementById('message').value;
+      socket.emit('message', { roomName: roomName, msg: message });
+      document.getElementById('message').value = '';
+    }
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('message', (data) => {
+      console.log(data, "data");
+      const messages = document.getElementById('messages');
+      const messageElement = document.createElement('li');
+      messageElement.textContent = `${data.user}: ${data.msg}`;
+      messages.appendChild(messageElement);
+    });
+  </script>
+
+
+</head>
+
+<body>
+  <h1>Welcome, <%= username %>
+  </h1>
+  <a href="/logout">Logout</a>
+  <div>
+    <input type="text" id="roomName" placeholder="Enter room name">
+    <button onclick="createRoom()">Create Room</button>
+    <button onclick="joinRoom()">Join Room</button>
+    <button onclick="leaveRoom()">Leave Room</button>
+  </div>
+  <div>
+    <input type="text" id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send Message</button>
+  </div>
+  <ul id="messages"></ul>
+</body>
+
+</html>
